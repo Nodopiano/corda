@@ -15,9 +15,9 @@ Use Dotenv\Dotenv;
 class Bootstrap
 {
 
-    public static function boot()
+    public static function boot($dir)
     {
-      $dotenv = new Dotenv\Dotenv(__DIR__);
+      $dotenv = new Dotenv($dir);
       $dotenv->load();
         // Nodopiano::bind('database', new QueryBuilder(
             // Connection::make(Nodopiano::get('config')['database'])

@@ -1,0 +1,13 @@
+{
+    "name": "nodopiano/corda",
+    "description": "Corda is a simple framework made by nodopiano",
+    "type": "library",
+    "license": "GPL",
+    "authors": [
+        {
+            "name": "Nodopiano",
+            "email": "marco.bonomo@nodopiano.it"
+        }
+    ],
+    "require": {}
+}

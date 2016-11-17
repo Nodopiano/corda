@@ -5,10 +5,16 @@
     "license": "GPL",
     "authors": [
         {
-            "name": "Nodopiano",
-            "email": "marco.bonomo@nodopiano.it"
+            "name": "Marco Bonomo",
+            "email": "marco.bonomo@nodopiano.it",
+            "role": "Lead Developer"
         }
     ],
+    "autoload": {
+      "psr-4" : {
+        "Nodopiano\\Corda\\" : "src/"
+      }
+    },
     "require": {
       "twig/twig": "~1.0",
       "guzzlehttp/guzzle": "~6.0",

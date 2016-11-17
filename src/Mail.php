@@ -16,12 +16,12 @@ class Mail
     {
         static::$mail = new PHPMailer;
         static::$mail->isSMTP();                                      // Set mailer to use SMTP
-        static::$mail->Host = 'mailtrap.io';  // Specify main and backup SMTP servers
-        static::$mail->SMTPAuth = true;                               // Enable SMTP authentication
-        static::$mail->Username = '92618117ccf828';                 // SMTP username
-        static::$mail->Password = '601e0e477d9e6b';                           // SMTP password
+        static::$mail->Host = getenv('MAIL_HOST');  // Specify main and backup SMTP servers
+        static::$mail->SMTPAuth = getenv('MAIL_AUTH');                               // Enable SMTP authentication
+        static::$mail->Username = getenv('MAIL_USERNAME');                 // SMTP username
+        static::$mail->Password = getenv('MAIL_PASSWORD');                           // SMTP password
         static::$mail->SMTPSecure = 'tls';                            // Enable TLS encryption, `ssl` also accepted
-        static::$mail->Port = 2525;
+        static::$mail->Port = getenv('MAIL_PORT');
     }
 
     public static function send($rcpt, $message)

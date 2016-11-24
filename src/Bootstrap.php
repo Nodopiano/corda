@@ -14,15 +14,37 @@ Use Dotenv\Dotenv;
  */
 class Bootstrap
 {
+    protected static $dir;
+
+
 
     public static function boot($dir)
     {
-      $dotenv = new Dotenv($dir);
+
+      static::$dir = $dir.'/';
+      $dotenv = new Dotenv(static::$dir.'..');
       $dotenv->load();
-        // Nodopiano::bind('database', new QueryBuilder(
-            // Connection::make(Nodopiano::get('config')['database'])
-        // ));
-        // Nodopiano::bind('api', require 'config/api.php' );
+
+      App::bind('config', require static::$dir.'config/config.php' );
+      static::loadServicesConfiguration(App::get('config')['services']);
+
+      if (App::get('config')['database']['enable']) {
+        App::bind('database', new QueryBuilder(
+            Connection::make(App::get('config')['database'])
+        ));
+      }
+    }
+
+    /**
+     * undocumented function
+     *
+     * @return void
+     */
+    public static function loadServicesConfiguration($services)
+    {
+      foreach ($services as $service) {
+        App::bind($service, require static::$dir.'config/'.$service.'.php' );
+      }
     }
 
 }

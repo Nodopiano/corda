@@ -11,6 +11,9 @@
         }
     ],
     "autoload": {
+      "files": [
+        "src/functions.php"
+      ],
       "psr-4" : {
         "Nodopiano\\Corda\\" : "src/"
       }

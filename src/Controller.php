@@ -15,6 +15,7 @@ class Controller
 
     protected $functions;
     protected $api;
+    protected $view;
 
     function __construct()
     {
@@ -25,11 +26,11 @@ class Controller
 
     public function show()
     {
-        return 'Ciao, Mondo!';
     }
 
     public function notFound()
     {
-        return $this->twig->loadTemplate('errors/404.html')->render(array('message' => 'Hello!'));
+        $view = view();
+        return $view->render($this->twig->loadTemplate('errors/404.html')->render(array('message' => 'Hello!')));
     }
 }

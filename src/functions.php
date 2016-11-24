@@ -3,11 +3,11 @@
  * global functions
  */
 
-public function getMedia($blocco, $array_fields) {
+function getMedia($blocco, $array_fields) {
   if(isset($blocco->acf_fc_layout)) {
     if ($blocco->acf_fc_layout == 'slideshow' && isset($blocco->slideshow)) {
       foreach ($blocco->slideshow as $slide) {
-        Self::getMedia($slide, $array_fields);
+        getMedia($slide, $array_fields);
       }
     }
   }
@@ -21,7 +21,7 @@ public function getMedia($blocco, $array_fields) {
   }
 }
 
-function view()
+function view($view,$data)
 {
-  return new Nodopiano\Corda\View;
+  return (new Nodopiano\Corda\View($view,$data));
 }

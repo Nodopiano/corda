@@ -3,56 +3,29 @@ Namespace Nodopiano\Corda;
 
 use Exception;
 use Nodopiano\Corda\Controller;
+use Phroute\Phroute\RouteCollector;
+use Phroute\Phroute\Dispatcher;
 
 class Router
 {
     protected $routes = [];
 
-    public static function load($file)
+    public function load($file)
     {
-        $router = new static;
-
+        $router = new RouteCollector();
         require $file;
-
-        return $router;
+        $router->get('{catchAll}', function() {
+          return view('errors/404.html');
+        });
+        $this->router = $router;
+        return $this;
     }
 
-    public function define($routes)
+    public function direct()
     {
-        $this->routes = $routes;
+      $dispatcher = new Dispatcher($this->router->getData());
+      $response = $dispatcher->dispatch($_SERVER['REQUEST_METHOD'], parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH));
+      return $response;
     }
 
-    public function direct($uri)
-    {
-        if (array_key_exists($uri, $this->routes)) {
-            return $this->callAction($this->getController($uri), $this->getAction($uri));
-        }
-        return (new Controller)->notFound();
-        throw new Exception('No route defined for this URI.');
-    }
-
-    public function getController($uri)
-    {
-        $segments = explode('@', $this->routes[$uri]);
-
-        return $action = count($segments) == 2 ? $segments[0] : 'Controller';
-    }
-
-    public function getAction($uri)
-    {
-        $segments = explode('@', $this->routes[$uri]);
-
-        return $action = count($segments) == 2 ? $segments[1] : 'notFound';
-    }
-
-    public function callAction($controller, $action)
-    {
-        if (! method_exists($controller, $action)){
-            throw new Exception(
-                "{$controller} non ha un'azione chiamata {$action}"
-            );
-        }
-
-        return (new $controller)->$action();
-    }
 }

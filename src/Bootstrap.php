@@ -26,6 +26,7 @@ class Bootstrap
       $dotenv->load();
 
       App::bind('config', require static::$dir.'config/config.php' );
+      App::bind('dir', $dir );
       static::loadServicesConfiguration(App::get('config')['services']);
 
       if (App::get('config')['database']['enable']) {

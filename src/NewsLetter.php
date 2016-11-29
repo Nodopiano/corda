@@ -2,7 +2,7 @@
 
 namespace Nodopiano\Corda;
 
-use MailChimp\MailChimp;
+use Mailchimp;
 
 /**
  * Class NewsLetter
@@ -13,22 +13,22 @@ use MailChimp\MailChimp;
 class NewsLetter
 {
 
-  protected $mc;
+  protected static $mc;
 
   public static function load()
   {
     $api_key = getenv('MAILCHIMP_KEY');
-    static::$mc = new MailChimp($api_key);
+    static::$mc = new Mailchimp($api_key);
   }
 
   public static function subscribe($list,$data = array())
   {
+    static::load();
     try {
       static::$mc->lists->subscribe($list, $data);
       return true;
     } catch (Mailchimp_Error $e) {
       return false;
-    }
     }
   }
 }

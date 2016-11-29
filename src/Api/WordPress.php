@@ -51,12 +51,9 @@ class WordPress
         return $this;
     }
 
-    public function get($json = false)
+    public function get()
     {
         $response = $this->client->request('GET', $this->query);
-        if ($json) {
-          return $this->toJson($response);
-        }
         return $this->toArray($response);
     }
 

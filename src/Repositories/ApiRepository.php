@@ -10,24 +10,24 @@ class ApiRepository
         $this->api = new $api;
     }
 
-    public function posts($id = null,$json = false)
+    public function posts($id = null)
     {
-        return $this->api->posts($id)->get($json);
+        return $this->api->posts($id)->get();
     }
 
-    public function pages($id = null, $json = false)
+    public function pages($id = null)
     {
-        return $this->api->pages($id)->get($json);
+        return $this->api->pages($id)->get();
     }
 
-    public function media($id = null, $json = false)
+    public function media($id = null)
     {
-        return $this->api->pages($id)->get($json);
+        return $this->api->pages($id)->get();
     }
 
     public function __call($name, $id = null)
     {
-        return $this->api->customPost($name, $id)->get($json);
+        return $this->api->customPost($name, $id)->get();
     }
 
 }

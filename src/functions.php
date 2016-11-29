@@ -21,7 +21,12 @@ function getMedia($blocco, $array_fields) {
   }
 }
 
-function view($view,$data)
+function view($view, array $data = array())
 {
   return (new Nodopiano\Corda\View($view,$data));
+}
+
+function json($data = array())
+{
+  return (new Nodopiano\Corda\Json($data));
 }

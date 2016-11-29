@@ -5,12 +5,13 @@ namespace Nodopiano\Corda;
 use Twig_Autoloader;
 use Twig_Loader_Filesystem;
 use Twig_Environment;
+use Nodopiano\Corda\Response;
 
 /**
  * Class View
  * @author yourname
  */
-class View
+class View implements Response
 {
   protected $twig;
   protected $view;
@@ -19,7 +20,7 @@ class View
   /**
    * @param mixed $view,datadependencies
    */
-  public function __construct($view,array $data)
+  public function __construct($view,array $data = array())
   {
         Twig_Autoloader::register();
         $this->twig = new Twig_Environment(new Twig_Loader_Filesystem('../app/views'));

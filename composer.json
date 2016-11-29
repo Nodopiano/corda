@@ -23,6 +23,7 @@
       "guzzlehttp/guzzle": "~6.0",
       "phpmailer/phpmailer": "^5.2",
       "vlucas/phpdotenv": "^2.4",
-      "phroute/phroute" : "^2.1"
+      "phroute/phroute" : "^2.1",
+      "mailchimp/mailchimp": ">=2.0.0"
     }
 }

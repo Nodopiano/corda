@@ -15,21 +15,23 @@ class Mail
     public static function boot()
     {
         static::$mail = new PHPMailer;
-        static::$mail->isSMTP();                                      // Set mailer to use SMTP
-        static::$mail->Host = getenv('MAIL_HOST');  // Specify main and backup SMTP servers
-        static::$mail->SMTPAuth = getenv('MAIL_AUTH');                               // Enable SMTP authentication
-        static::$mail->Username = getenv('MAIL_USERNAME');                 // SMTP username
-        static::$mail->Password = getenv('MAIL_PASSWORD');                           // SMTP password
-        static::$mail->SMTPSecure = 'tls';                            // Enable TLS encryption, `ssl` also accepted
-        static::$mail->Port = getenv('MAIL_PORT');
+        if (getenv('MAIL_DRIVER') == 'smtp') {
+          static::$mail->isSMTP();
+          static::$mail->Host = getenv('MAIL_HOST');  // Specify main and backup SMTP servers
+          static::$mail->SMTPAuth = getenv('MAIL_AUTH');                               // Enable SMTP authentication
+          static::$mail->Username = getenv('MAIL_USERNAME');                 // SMTP username
+          static::$mail->Password = getenv('MAIL_PASSWORD');                           // SMTP password
+          static::$mail->SMTPSecure = 'tls';                            // Enable TLS encryption, `ssl` also accepted
+          static::$mail->Port = getenv('MAIL_PORT');
+        }          // Set mailer to use SMTP
     }
 
-    public static function send($rcpt, $message)
+    public static function send($rcpt, $subject, $message)
     {
         self::boot();
-        static::$mail->setFrom('info@example.com', 'Mailer');
+        static::$mail->setFrom(getevng('MAIL_FROM'));
         static::$mail->addAddress($rcpt);
-        static::$mail->Subject = 'Here is the subject';
+        static::$mail->Subject = $subject;
         static::$mail->Body    = $message;
         if(!static::$mail->send()) {
             return 'Message could not be sent. Mailer Error: ' . $mail->ErrorInfo;

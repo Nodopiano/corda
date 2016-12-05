@@ -46,6 +46,8 @@ class View implements Response
         $this->twig->addGlobal('facebook', getenv('FACEBOOK'));
         $this->twig->addGlobal('hotjar', getenv('HOTJAR'));
         $this->twig->addGlobal('mybusiness', getenv('MYBUSINESS'));
+        $this->twig->addGlobal('cookiePolicyId', getenv('COOKIE_POLICY'));
+        $this->twig->addGlobal('siteId', getenv('IUBENDA_SITE_ID'));
   }
 
 }

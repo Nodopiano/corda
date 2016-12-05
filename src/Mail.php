@@ -29,7 +29,7 @@ class Mail
     public static function send($rcpt, $subject, $message)
     {
         self::boot();
-        static::$mail->setFrom('alpha@nodopiano.it');
+        static::$mail->setFrom(getenv('MAIL_FROM'));
         static::$mail->addAddress(getenv('MAIL_TO'));
         $body = (new Mail())->makeBody($rcpt,$message);
         static::$mail->Subject = $subject;

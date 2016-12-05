@@ -29,14 +29,29 @@ class Mail
     public static function send($rcpt, $subject, $message)
     {
         self::boot();
-        static::$mail->setFrom(getevng('MAIL_FROM'));
-        static::$mail->addAddress($rcpt);
+        static::$mail->setFrom('alpha@nodopiano.it');
+        static::$mail->addAddress(getenv('MAIL_TO'));
+        $body = (new Mail())->makeBody($rcpt,$message);
         static::$mail->Subject = $subject;
-        static::$mail->Body    = $message;
+        static::$mail->Body    = $body;
+        static::$mail->isHTML(true);
         if(!static::$mail->send()) {
             return 'Message could not be sent. Mailer Error: ' . $mail->ErrorInfo;
         } else {
             return 'Message has been sent';
         }
     }
+
+    /**
+     * undocumented function
+     *
+     * @return void
+     */
+    public function makeBody($rcpt,$message)
+    {
+      $body = '<strong>Mittente</strong>: '.$rcpt.'<br>';
+      $body .= '<strong>Messaggio</strong>: '.$message.'<br>';
+      return $body;
+    }
+
 }

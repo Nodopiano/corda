@@ -26,6 +26,5 @@ class Controller
     public function notFound()
     {
         return view('errors/404.html',['message' => 'Hello!']);
-        return $view;
     }
 }

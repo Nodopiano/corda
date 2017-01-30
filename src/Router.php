@@ -15,7 +15,8 @@ class Router
         $router = new RouteCollector();
         require $file;
         $router->get('{catchAll}', function() {
-          return view('errors/404.html');
+            http_response_code(404); 
+            return view('errors/404.html');
         });
         $this->router = $router;
         return $this;

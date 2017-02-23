@@ -1,9 +1,12 @@
 <?php
 namespace Nodopiano\Corda\Repositories;
 
+use Nodopiano\Corda\Cache;
+
 class ApiRepository
 {
     protected $api;
+    protected $cache;
 
     public function __construct($api)
     {
@@ -12,22 +15,22 @@ class ApiRepository
 
     public function posts($id = null)
     {
-        return $this->api->posts($id)->get();
+         return Cache::get($this->api->posts($id));
     }
 
     public function pages($id = null)
     {
-        return $this->api->pages($id)->get();
+        return Cache::get($this->api->pages($id));
     }
 
     public function media($id = null)
     {
-        return $this->api->pages($id)->get();
+        return Cache::get($this->api->pages($id));
     }
 
     public function __call($name, $id = null)
     {
-        return $this->api->customPost($name, $id)->get();
+        return Cache::get($this->api->customPost($name, $id));
     }
 
 }

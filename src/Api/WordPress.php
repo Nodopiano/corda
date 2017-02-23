@@ -3,8 +3,9 @@ Namespace Nodopiano\Corda\Api;
 
 Use Nodopiano\Corda\App;
 use GuzzleHttp\Client;
+use Nodopiano\Corda\Api\Contracts\ApiInterface;
 
-class WordPress
+class WordPress implements ApiInterface
 {
 
     protected $api;
@@ -40,7 +41,7 @@ class WordPress
         return $this;
     }
 
-    public function getUrl($id)
+    public function getUrl()
     {
         return $this->api['url'].$this->query;
     }

@@ -21,11 +21,11 @@ class NewsLetter
     static::$mc = new Mailchimp($api_key);
   }
 
-  public static function subscribe($list,$data = array())
+  public static function subscribe($list,$data = array(),$merge_vars = array())
   {
     static::load();
     try {
-      static::$mc->lists->subscribe($list, $data);
+      static::$mc->lists->subscribe($list, $data, $merge_vars);
       return true;
     } catch (Mailchimp_Error $e) {
       return false;

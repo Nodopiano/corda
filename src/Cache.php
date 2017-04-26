@@ -15,7 +15,7 @@ class Cache
 
     public static function get(ApiInterface $query)
     {
-        if (getenv('CACHE') == 'true') {
+        if (getenv('CACHE') == 'true' && $_GET['cache'] != 'false') {
             return self::get_content($query);            
         }
         return $query->get();
@@ -32,7 +32,8 @@ class Cache
         $storagePath = App::get('dir').'/storage/cache/';
         $file = $storagePath.base64_encode($query->getUrl()); 
         $current_time = time(); 
-        $expire_time = 2 * 60 * 60; 
+        $cache_time = getenv('CACHE_TIME') ?: 2;
+        $expire_time = $cache_time * 60 * 60; 
         if(file_exists($file)) {
             $file_time = filemtime($file);
             if ($current_time - $expire_time < $file_time) return json_decode(file_get_contents($file));

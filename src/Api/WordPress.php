@@ -11,13 +11,20 @@ class WordPress implements ApiInterface
     protected $api;
     protected $query;
     protected $client;
+    protected $headers = array();
+    protected $filter;
 
     public function __construct()
     {
+        $username = getenv('WPUSER');
+        $password = getenv('WPPASS'); 
         $this->api = App::get('api');
+        if ($username && $password) $this->headers['Authorization'] = 'Basic ' . base64_encode( $username . ':' . $password );  
+        $this->filters = $_GET;
+        $uri = App::get('api')['url'];
         $this->client = new Client([
             // Base URI is used with relative requests
-            'base_uri' => App::get('api')['url'],
+            'base_uri' => $uri,
             // You can set any number of default request options.
             'timeout'  => 2.0,
         ]);
@@ -54,7 +61,7 @@ class WordPress implements ApiInterface
 
     public function get()
     {
-        $response = $this->client->request('GET', $this->query);
+        $response = $this->client->request('GET',$this->query, array('query' => $this->filters, 'headers' => $this->headers));
         return $this->toArray($response);
     }
 

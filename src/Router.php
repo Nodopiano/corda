@@ -5,6 +5,7 @@ use Exception;
 use Nodopiano\Corda\Controller;
 use Phroute\Phroute\RouteCollector;
 use Phroute\Phroute\Dispatcher;
+use Nodopiano\Corda\Cache;
 
 class Router
 {
@@ -14,6 +15,10 @@ class Router
     {
         $router = new RouteCollector();
         require $file;
+        $router->get('flush', function() {
+            Cache::flush();
+            return view('messages/cache.html');
+        });
         $router->get('{catchAll}', function() {
             http_response_code(404); 
             return view('errors/404.html');

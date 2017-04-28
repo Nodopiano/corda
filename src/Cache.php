@@ -33,7 +33,9 @@ class Cache
         if ($file) unlink($file);
         else {
             $storagePath = App::get('dir').'/storage/cache/';
+            $publicPath = App::get('dir').'/../public/';
             array_map('unlink', glob($storagePath.'*'));
+            array_map('unlink', glob($publicPath.'*.html'));
         }
     }
 

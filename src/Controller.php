@@ -22,7 +22,7 @@ class Controller
     public function show()
     {
     }
-
+    
     public function notFound()
     {
         return view('errors/404.html',['message' => 'Hello!']);

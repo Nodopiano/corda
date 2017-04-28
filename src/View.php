@@ -7,6 +7,7 @@ use Twig_Loader_Filesystem;
 use Twig_Environment;
 use Twig_SimpleFunction;
 use Nodopiano\Corda\Response;
+use Nodopiano\Corda\Cache;
 
 /**
  * Class View
@@ -30,6 +31,7 @@ class View implements Response
         $this->addTwigGlobals();
         $this->view = $view;
         $this->data = $data;
+        $this->file = App::get('dir').'/../public/'.$this->view;
     }
 
     /**
@@ -39,7 +41,25 @@ class View implements Response
      */
     public function render()
     {
-        echo $this->twig->loadTemplate($this->view)->render($this->data);
+        $flush = isset($_GET['cache']) ? true : false;
+        $view = $this->twig->loadTemplate($this->view)->render($this->data);
+        if (getenv('CACHE') == 'true' && !$flush) {
+            $this->store($view);
+        }
+        else {
+            $this->flush();
+        }
+        echo $view;
+    }
+
+    public function store($view)
+    {
+        Cache::store($view, $this->file);
+    }
+
+    public function flush()
+    {
+        Cache::flush($this->file);
     }
 
     public function addTwigGlobals()

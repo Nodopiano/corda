@@ -15,32 +15,41 @@ class Cache
 
     public static function get(ApiInterface $query)
     {
-        if (getenv('CACHE') == 'true' && $_GET['cache'] != 'false') {
-            return self::get_content($query);            
+        $flush = isset($_GET['cache']) ? true : false;
+        if (getenv('CACHE') == 'true' && !flush) {
+            return self::get_content(json_encode($query->get()),$query->getUrl());            
         }
         return $query->get();
     }
  
-    public static function store(ApiInterface $query,$file)
+    public static function store($content,$file)
     {
-            $content = $query->get();
-            file_put_contents($file,json_encode($content));
+            file_put_contents($file,$content);
             return $content;
     }
 
-    public static function get_content(ApiInterface $query) {
+    public static function flush ($file) 
+    {
+        if ($file) unlink($file);
+        else {
+            $storagePath = App::get('dir').'/storage/cache/';
+            array_map('unlink', glob($storagePath.'*'));
+        }
+    }
+
+    public static function get_content($content, $url) {
         $storagePath = App::get('dir').'/storage/cache/';
-        $file = $storagePath.base64_encode($query->getUrl()); 
+        $file = $storagePath.base64_encode($url); 
         $current_time = time(); 
         $cache_time = getenv('CACHE_TIME') ?: 2;
         $expire_time = $cache_time * 60 * 60; 
         if(file_exists($file)) {
             $file_time = filemtime($file);
             if ($current_time - $expire_time < $file_time) return json_decode(file_get_contents($file));
-            return self::store($query,$file);            
+            return self::store($content,$file);            
         }
         else {
-            return self::store($query,$file);            
+            return self::store($content,$file);            
         }
     }
 

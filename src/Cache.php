@@ -16,7 +16,7 @@ class Cache
     public static function get(ApiInterface $query)
     {
         $flush = isset($_GET['cache']) ? true : false;
-        if (getenv('CACHE') == 'true' && !flush) {
+        if (getenv('CACHE') == 'true' && !$flush) {
             return self::get_content(json_encode($query->get()),$query->getUrl());            
         }
         return $query->get();
